@@ -1,16 +1,16 @@
-let encodedPhone = "OTE4NDc2MDE2OTU1";  // encoded +918476016955
+let encodedPhone = "OTE4NDc2MDE2OTU1";  // encoded 918476016955
 
 function sendWhatsApp() {
     let phone = atob(encodedPhone);
 
-    var name = document.getElementById("name").value;
-    var email = document.getElementById("email").value;
-    var enqphone = document.getElementById("enqphone").value;
-    var country = document.getElementById("country").value;
-    var message = document.getElementById("message").value;
+    var name = document.getElementById("name")?.value || "";
+    var email = document.getElementById("email")?.value || "";
+    var enqphone = document.getElementById("enqphone")?.value || "";
+    var country = document.getElementById("country")?.value || "";
+    var message = document.getElementById("message")?.value || "";
 
     var url = "https://wa.me/" + phone + "?text=" +
-        "*Enquiry from Alije Enterprises*" + "%0A%0A" +
+        "*Enquiry from Alije Enterprises*%0A%0A" +
         "*Name:* " + name + "%0A" +
         "*Contact:* " + email + "%0A" +
         "*Whatsapp Number:* " + enqphone + "%0A" +
@@ -21,11 +21,11 @@ function sendWhatsApp() {
 }
 
 function sendEmail() {
-    var name = encodeURIComponent(document.getElementById("name").value);
-    var email = encodeURIComponent(document.getElementById("email").value);
-    var enqphone = encodeURIComponent(document.getElementById("enqphone").value);
-    var country = encodeURIComponent(document.getElementById("country").value);
-    var message = encodeURIComponent(document.getElementById("message").value);
+    var name = encodeURIComponent(document.getElementById("name")?.value || "");
+    var email = encodeURIComponent(document.getElementById("email")?.value || "");
+    var enqphone = encodeURIComponent(document.getElementById("enqphone")?.value || "");
+    var country = encodeURIComponent(document.getElementById("country")?.value || "");
+    var message = encodeURIComponent(document.getElementById("message")?.value || "");
 
     var mailTo = "mailto:enterprisesalije@gmail.com"
         + "?subject=Alije Enterprises Enquiry from : " + name
@@ -40,14 +40,11 @@ function sendEmail() {
 // ================= Header Shrink on Scroll =================
 const header = document.getElementById("header");
 
-function onScroll() {
-    if (window.scrollY > 50) {
-        header.classList.add("shrink");
-    } else {
-        header.classList.remove("shrink");
-    }
+if (header) {
+    window.addEventListener("scroll", () => {
+        header.classList.toggle("shrink", window.scrollY > 50);
+    });
 }
-window.addEventListener("scroll", onScroll);
 
 // ================= Sidebar Toggle =================
 const sidebar = document.getElementById("sidebar");
@@ -55,6 +52,7 @@ const openBtn = document.getElementById("openSidebar");
 const closeBtn = document.getElementById("closeSidebar");
 
 function openSidebar() {
+    if (!sidebar) return;
     sidebar.classList.add("open");
     sidebar.setAttribute("aria-hidden", "false");
     document.documentElement.classList.add("no-scroll");
@@ -62,6 +60,7 @@ function openSidebar() {
 }
 
 function closeSidebar() {
+    if (!sidebar) return;
     sidebar.classList.remove("open");
     sidebar.setAttribute("aria-hidden", "true");
     document.documentElement.classList.remove("no-scroll");
@@ -69,24 +68,22 @@ function closeSidebar() {
 }
 
 function toggleSidebar() {
-    if (sidebar.classList.contains("open")) closeSidebar();
-    else openSidebar();
+    if (!sidebar) return;
+    sidebar.classList.contains("open") ? closeSidebar() : openSidebar();
 }
 
-if (openBtn) openBtn.addEventListener("click", toggleSidebar);
-if (closeBtn) closeBtn.addEventListener("click", closeSidebar);
+openBtn && openBtn.addEventListener("click", toggleSidebar);
+closeBtn && closeBtn.addEventListener("click", closeSidebar);
 
-window.addEventListener("keydown", (e) => {
+window.addEventListener("keydown", e => {
     if (e.key === "Escape") closeSidebar();
 });
+
 window.addEventListener("resize", () => {
     if (window.innerWidth > 920) closeSidebar();
 });
 
 // ================= Active Link Highlight =================
-const navLinks = document.querySelectorAll(".nav-links a");
-const sidebarLinks = document.querySelectorAll(".sidebar a");
-
 function setActiveLink() {
     const current = (location.pathname.split("/").pop() || "index.html").toLowerCase();
     const allLinks = document.querySelectorAll(".nav-links a, .sidebar a");
@@ -104,13 +101,6 @@ function setActiveLink() {
 }
 setActiveLink();
 
-navLinks.forEach(a =>
-    a.addEventListener("click", () => {
-        if (window.innerWidth <= 920) closeSidebar();
-    })
-);
-sidebarLinks.forEach(a => a.addEventListener("click", closeSidebar));
-
 // ================= FAQ Toggle =================
 const faqItems = document.querySelectorAll(".faq-item");
 
@@ -118,9 +108,10 @@ faqItems.forEach(item => {
     const question = item.querySelector(".faq-question");
     const answer = item.querySelector(".faq-answer");
 
+    if (!question || !answer) return;
+
     question.addEventListener("click", () => {
         item.classList.toggle("active");
         answer.style.display = answer.style.display === "block" ? "none" : "block";
     });
-});
 });
