@@ -10,7 +10,7 @@ function sendWhatsApp() {
     var message = document.getElementById("message")?.value || "";
 
     var url = "https://wa.me/" + phone + "?text=" +
-        "*Enquiry from Alije Enterprises*%0A%0A" +
+        "*Enquiry from Alije Group*%0A%0A" +
         "*Name:* " + name + "%0A" +
         "*Contact:* " + email + "%0A" +
         "*Whatsapp Number:* " + enqphone + "%0A" +
@@ -28,7 +28,7 @@ function sendEmail() {
     var message = encodeURIComponent(document.getElementById("message")?.value || "");
 
     var mailTo = "mailto:enterprisesalije@gmail.com"
-        + "?subject=Alije Enterprises Enquiry from : " + name
+        + "?subject=Alije Group Enquiry from : " + name
         + "&body=Email: " + email
         + "%0AWhatsapp Number: " + enqphone
         + "%0ACountry: " + country
