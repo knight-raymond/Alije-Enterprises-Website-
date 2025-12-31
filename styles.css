@@ -1,5 +1,4 @@
-
-    /* Global Styles */
+   /* Global Styles */
     * {
     margin: 0;
     padding: 0;
@@ -211,7 +210,7 @@
     
     /* Products Section */
     .products {
-    padding: 25px;
+    padding: 25px ;
     text-align: center;
     }
     .products h1 {
@@ -222,6 +221,26 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
+    }
+    .ourproducts{
+    text-align:center;
+    font-size: 1.1rem;
+    background: #fff;
+    padding: 50px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    width: 100%;
+    background: #fff;
+    
+    }
+    .ourproducts h1 {
+    font-size: 30px;
+    margin-bottom: 20px;
+    }
+    .ourproducts p{
+    text-align: justify;
+    line-height: 1.5;
+    padding-bottom: 20px;
     }
     .card {
     background: #fff;
@@ -235,18 +254,19 @@
     }
     .card img {
     width: 100%;
-    height: 180px;
+    height: 200px;
     object-fit: cover;
+    border-radius: 15px;
     }
     .card-content {
-    padding: 15px;
+    padding: 12px;
     }
     .card-content h3 {
     margin-bottom: 10px;
     }
     .card-content p {
     color: #555;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
     }
     .btn {
     display: inline-block;
@@ -263,7 +283,9 @@
     
     /* Features Section */
     .features-section {
+    margin-top : 40px;
     padding: 50px;
+    text-align: center;
     }
     .features {
     display: grid;
@@ -273,7 +295,7 @@
     .feature-card {
     background: #fff;
     border-radius: 15px;
-    padding: 15px;
+    padding: 25px;
     box-shadow: 0 0 12px rgba(0,0,0,0.1);
     text-align: center;
     transition: transform 0.2s ease;
@@ -467,19 +489,9 @@
     .hero { margin-top: 72px; padding: 18px; }
     .hero h1 { font-size: 26px; }
     .enquiry-section { max-width: 100%; border-radius: 0; }
-    .features-section { padding: 13px; }
+    .features-section { padding: 25px; }
     .products { padding: 11px; }
     }
     
     /* Disable Scroll when Sidebar open */
     .no-scroll { overflow: hidden; }
-    adding: 18px; }
-    .hero h1 { font-size: 26px; }
-    .enquiry-section { max-width: 100%; border-radius: 0; }
-    .features-section { padding: 13px; }
-    .products { padding: 11px; }
-    }
-    
-    /* Disable Scroll when Sidebar open */
-    .no-scroll { overflow: hidden; }
-    
