@@ -7,8 +7,7 @@ function init() {
     /* ================= THANK YOU POPUP ================= */
     const thanksPopup = document.getElementById("thanksPopup");
     const closeThanksBtn = document.getElementById("closeThanks");
-    const formLoader = document.getElementById("formLoader");
-
+    
     function showThanksPopup() {
         if (!thanksPopup) return;
         thanksPopup.classList.add("show");
@@ -19,24 +18,13 @@ function init() {
         thanksPopup.classList.remove("show");
     }
 
-    function autoCloseThanks() {
-        setTimeout(() => {
-            closeThanksPopup();
-            hideLoader();
-        }, 3000);
-    }
+    
 
     closeThanksBtn && closeThanksBtn.addEventListener("click", closeThanksPopup);
 
 
     /* ================= LOADER ================= */
-    function showLoader() {
-        if (formLoader) formLoader.style.display = "block";
-    }
-
-    function hideLoader() {
-        if (formLoader) formLoader.style.display = "none";
-    }
+    
 
 
     /* ================= FORM VALIDATION ================= */
@@ -68,7 +56,7 @@ function init() {
     window.sendWhatsApp = function () {
         if (!validateForm()) return;
 
-        showLoader();
+        
 
         let phone = atob(encodedPhone);
 
@@ -87,7 +75,7 @@ function init() {
             "*Message:* " + message;
 
         showThanksPopup();
-        autoCloseThanks();
+        
 
         window.open(url, "_blank");
     };
@@ -97,7 +85,7 @@ function init() {
     window.sendEmail = function () {
         if (!validateForm()) return;
 
-        showLoader();
+        
 
         let name = encodeURIComponent(document.getElementById("name")?.value || "");
         let email = encodeURIComponent(document.getElementById("email")?.value || "");
@@ -114,7 +102,7 @@ function init() {
             "%0A%0AMessage:%0A" + message;
 
         showThanksPopup();
-        autoCloseThanks();
+       
 
         window.location.href = mailTo;
     };
