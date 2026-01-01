@@ -193,10 +193,12 @@
         <div class="form-group">
             <label for="name">Name</label>
             <input id="name" name="name" type="text" placeholder="Enter your name" required>
+			<small class="error-text">This feild is required</small>
         </div>
         <div class="form-group">
             <label for="email">Email</label>
             <input id="email" name="email" type="email" placeholder="Enter your email" required>
+			<small class="error-text">This feild is required</small>
         </div>
         <div class="form-group">
             <label for="enqphone">Whatsapp Number</label>
@@ -205,10 +207,12 @@
         <div class="form-group">
             <label for="country">Country</label>
             <input id="country" name="country" type="text" placeholder="Enter your country" required>
+			<small class="error-text">This feild is required</small>
         </div>
         <div class="form-group message-box">
             <label for="message">Message</label>
             <textarea id="message" name="message" placeholder="Write your message" required></textarea>
+			<small class="error-text">This feild is required</small>
         </div>
         <button class="enquiry-btn" type="submit" onclick="sendEmail()">Submit Enquiry via mail</button>
         <button class="enquiry-btn-wa" type="submit" onclick="sendWhatsApp()">Submit Enquiry via Whatsapp</button>
