@@ -36,7 +36,7 @@ function init() {
         setTimeout(() => {
             closeThanksPopup();
             hideLoader();
-        }, 3000);
+        }, 30000);
     }
 
     closeThanksBtn && closeThanksBtn.addEventListener("click", closeThanksPopup);
