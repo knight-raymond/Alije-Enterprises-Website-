@@ -522,15 +522,6 @@ footer {
     overflow: hidden;
 }
 
-/* Subtle texture overlay */
-footer::before {
-    content: "";
-    position: absolute;
-    top:0; left:0; right:0; bottom:0;
-    background: url('https://www.transparenttextures.com/patterns/dark-mosaic.png') repeat;
-    opacity: 0.05;
-    z-index: 0;
-}
 
 .footer-content {
     display: flex;
@@ -546,11 +537,6 @@ footer::before {
     transition: all 1s ease;
 }
 
-/* Fade-in on scroll */
-.footer-content.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
 
 .footer-section {
     flex: 1 1 220px;
