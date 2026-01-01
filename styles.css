@@ -141,7 +141,7 @@ color: #1a73e8;
 .hero {  
 min-height: 72vh;  
 background: linear-gradient(135deg, rgb(71, 160, 250), rgb(0, 190, 146));  
-margin-top: 84px;  
+margin-top: 50px;  
 color: #fff;  
 display: flex;  
 align-items: center;  
