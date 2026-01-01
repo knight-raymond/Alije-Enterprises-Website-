@@ -1,45 +1,42 @@
 function init() {
 
-    /* ================= CONFIG ================= */
-    const encodedPhone = "OTE4NDc2MDE2OTU1"; // encoded number
-    const AJAX_URL = "submit-enquiry.php";
+    /* ================= ENQUIRY CONFIG ================= */
+    let encodedPhone = "OTE4NDc2MDE2OTU1"; // encoded 918476016955
 
 
-    /* ================= FORM & BUTTONS ================= */
-    const form = document.getElementById("enquiryForm");
-    const whatsappBtn = document.getElementById("sendWhatsAppBtn");
-    const emailBtn = document.getElementById("sendEmailBtn");
-
-
-    /* ================= POPUP & LOADER ================= */
+    /* ================= THANK YOU POPUP ================= */
     const thanksPopup = document.getElementById("thanksPopup");
     const closeThanksBtn = document.getElementById("closeThanks");
     const formLoader = document.getElementById("formLoader");
 
     function showThanksPopup() {
-        thanksPopup && thanksPopup.classList.add("show");
+        if (!thanksPopup) return;
+        thanksPopup.classList.add("show");
     }
 
     function closeThanksPopup() {
-        thanksPopup && thanksPopup.classList.remove("show");
-    }
-
-    function showLoader() {
-        formLoader && (formLoader.style.display = "block");
-    }
-
-    function hideLoader() {
-        formLoader && (formLoader.style.display = "none");
+        if (!thanksPopup) return;
+        thanksPopup.classList.remove("show");
     }
 
     function autoCloseThanks() {
         setTimeout(() => {
             closeThanksPopup();
             hideLoader();
-        }, 30000);
+        }, 3000);
     }
 
     closeThanksBtn && closeThanksBtn.addEventListener("click", closeThanksPopup);
+
+
+    /* ================= LOADER ================= */
+    function showLoader() {
+        if (formLoader) formLoader.style.display = "block";
+    }
+
+    function hideLoader() {
+        if (formLoader) formLoader.style.display = "none";
+    }
 
 
     /* ================= FORM VALIDATION ================= */
@@ -53,13 +50,13 @@ function init() {
 
             const error = input.nextElementSibling;
 
-            if (!input.value.trim()) {
+            if (input.value.trim() === "") {
                 isValid = false;
                 input.classList.add("input-error");
-                error && (error.style.display = "block");
+                if (error) error.style.display = "block";
             } else {
                 input.classList.remove("input-error");
-                error && (error.style.display = "none");
+                if (error) error.style.display = "none";
             }
         });
 
@@ -67,74 +64,60 @@ function init() {
     }
 
 
-    /* ================= FORM DATA ================= */
-    function getFormData() {
-        return {
-            name: document.getElementById("name")?.value.trim() || "",
-            email: document.getElementById("email")?.value.trim() || "",
-            enqphone: document.getElementById("enqphone")?.value.trim() || "",
-            country: document.getElementById("country")?.value.trim() || "",
-            message: document.getElementById("message")?.value.trim() || ""
-        };
-    }
-
-
-    /* ================= AJAX ================= */
-    function ajaxSubmit(data, callback) {
-        fetch(AJAX_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
-        })
-        .then(res => res.json())
-        .then(callback)
-        .catch(() => callback({ success: false }));
-    }
-
-
-    /* ================= WHATSAPP ================= */
-    whatsappBtn && whatsappBtn.addEventListener("click", function (e) {
-        e.preventDefault();
+    /* ================= WHATSAPP SUBMIT ================= */
+    window.sendWhatsApp = function () {
         if (!validateForm()) return;
 
         showLoader();
-        const data = getFormData();
-        const phone = atob(encodedPhone);
 
-        ajaxSubmit(data, () => {
-            const url =
-                "https://wa.me/" + phone + "?text=" +
-                "*Enquiry from Alije Group*%0A%0A" +
-                "*Name:* " + data.name + "%0A" +
-                "*Contact:* " + data.email + "%0A" +
-                "*Whatsapp Number:* " + data.enqphone + "%0A" +
-                "*Country:* " + data.country + "%0A" +
-                "*Message:* " + data.message;
+        let phone = atob(encodedPhone);
 
-            showThanksPopup();
-            autoCloseThanks();
-            window.open(url, "_blank");
-        });
-    });
+        let name = document.getElementById("name")?.value || "";
+        let email = document.getElementById("email")?.value || "";
+        let enqphone = document.getElementById("enqphone")?.value || "";
+        let country = document.getElementById("country")?.value || "";
+        let message = document.getElementById("message")?.value || "";
+
+        let url = "https://wa.me/" + phone + "?text=" +
+            "*Enquiry from Alije Group*%0A%0A" +
+            "*Name:* " + name + "%0A" +
+            "*Contact:* " + email + "%0A" +
+            "*Whatsapp Number:* " + enqphone + "%0A" +
+            "*Country:* " + country + "%0A" +
+            "*Message:* " + message;
+
+        showThanksPopup();
+        autoCloseThanks();
+
+        window.open(url, "_blank");
+    };
 
 
-    /* ================= EMAIL ================= */
-    emailBtn && emailBtn.addEventListener("click", function (e) {
-        e.preventDefault();
+    /* ================= EMAIL SUBMIT ================= */
+    window.sendEmail = function () {
         if (!validateForm()) return;
 
         showLoader();
-        const data = getFormData();
 
-        ajaxSubmit(data, () => {
-            showThanksPopup();
-            autoCloseThanks();
-        });
-    });
+        let name = encodeURIComponent(document.getElementById("name")?.value || "");
+        let email = encodeURIComponent(document.getElementById("email")?.value || "");
+        let enqphone = encodeURIComponent(document.getElementById("enqphone")?.value || "");
+        let country = encodeURIComponent(document.getElementById("country")?.value || "");
+        let message = encodeURIComponent(document.getElementById("message")?.value || "");
 
+        let mailTo =
+            "mailto:enterprisesalije@gmail.com" +
+            "?subject=Alije Group Enquiry from : " + name +
+            "&body=Email: " + email +
+            "%0AWhatsapp Number: " + enqphone +
+            "%0ACountry: " + country +
+            "%0A%0AMessage:%0A" + message;
 
-    /* ================= PREVENT FORM SUBMIT ================= */
-    form && form.addEventListener("submit", e => e.preventDefault());
+        showThanksPopup();
+        autoCloseThanks();
+
+        window.location.href = mailTo;
+    };
 
 
     /* ================= HEADER SHRINK ================= */
@@ -169,12 +152,12 @@ function init() {
     });
 
 
-    /* ================= ACTIVE LINKS ================= */
+    /* ================= ACTIVE LINK ================= */
     function setActiveLink() {
         const current = (location.pathname.split("/").pop() || "index.html").toLowerCase();
-        document.querySelectorAll(".nav-links a, .sidebar a").forEach(link => {
-            const href = link.getAttribute("href")?.split("/").pop().toLowerCase();
-            link.classList.toggle("active-link", href === current);
+        document.querySelectorAll(".nav-links a, .sidebar a").forEach(a => {
+            const href = a.getAttribute("href")?.split("/").pop().toLowerCase();
+            a.classList.toggle("active-link", href === current);
         });
     }
     setActiveLink();
@@ -184,20 +167,19 @@ function init() {
     document.querySelectorAll(".faq-item").forEach(item => {
         const q = item.querySelector(".faq-question");
         const a = item.querySelector(".faq-answer");
-        if (!q || !a) return;
 
-        q.addEventListener("click", () => {
+        q && q.addEventListener("click", () => {
             item.classList.toggle("active");
             a.style.display = a.style.display === "block" ? "none" : "block";
         });
     });
 
 
-    /* ================= FULLSCREEN IMAGE GALLERY ================= */
+    /* ================= FULLSCREEN IMAGE PREVIEW ================= */
     const images = document.querySelectorAll(".photo-item img");
     const fullscreenView = document.getElementById("fullscreenView");
     const fullscreenImg = document.getElementById("fullscreenImg");
-    const previewCloseBtn = document.getElementById("previewcloseBtn");
+    const previewCloseBtn = document.getElementById("closeBtn");
 
     images.forEach(img => {
         img.addEventListener("click", () => {
@@ -211,18 +193,19 @@ function init() {
     });
 
     fullscreenView && fullscreenView.addEventListener("click", e => {
-        if (e.target === fullscreenView) fullscreenView.classList.remove("active");
+        if (e.target === fullscreenView) {
+            fullscreenView.classList.remove("active");
+        }
     });
 
-
-    /* ================= ESC KEY ================= */
     document.addEventListener("keydown", e => {
         if (e.key === "Escape") {
             fullscreenView && fullscreenView.classList.remove("active");
             closeSidebar();
         }
     });
+
 }
 
-/* ================= INIT ================= */
+/* INIT ON LOAD */
 document.addEventListener("DOMContentLoaded", init);
