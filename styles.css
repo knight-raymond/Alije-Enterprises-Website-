@@ -517,10 +517,9 @@ text-align: justify;
 /* Footer Base */
 
 footer {
-background: linear-gradient(135deg, #0e0e0e, #1a1a1a);
-color: #ddd;
+background : #0e0e0e;
+color: #fff;
 padding: 60px 20px 30px;
-font-family: 'Segoe UI', Arial, sans-serif;
 position: relative;
 overflow: hidden;
 }
@@ -551,15 +550,6 @@ position: relative;
 letter-spacing: 0.5px;
 }
 
-.footer-section h4::after {
-content: "";
-display: block;
-width: 45px;
-height: 2px;
-background: #ff9900;
-margin-top: 6px;
-border-radius: 2px;
-}
 
 .footer-section p, .footer-section a {
 color: #bbb;
