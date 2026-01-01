@@ -426,6 +426,9 @@
   margin-bottom: 20px;
 }
 
+#thanksPopup { display: none; }
+#thanksPopup.show { display: block; }
+
 .thanks-box button {
   background: #000;
   color: #fff;
