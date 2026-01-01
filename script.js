@@ -1,8 +1,14 @@
 function init() {
 
     /* ================= CONFIG ================= */
-    let encodedPhone = "OTE4NDc2MDE2OTU1"; // encoded 918476016955
-    const AJAX_URL = "submit-enquiry.php"; // 🔁 change to your backend URL
+    const encodedPhone = "OTE4NDc2MDE2OTU1"; // encoded number
+    const AJAX_URL = "submit-enquiry.php";
+
+
+    /* ================= FORM & BUTTONS ================= */
+    const form = document.getElementById("enquiryForm");
+    const whatsappBtn = document.getElementById("sendWhatsAppBtn");
+    const emailBtn = document.getElementById("sendEmailBtn");
 
 
     /* ================= POPUP & LOADER ================= */
@@ -36,7 +42,7 @@ function init() {
     closeThanksBtn && closeThanksBtn.addEventListener("click", closeThanksPopup);
 
 
-    /* ================= VALIDATION ================= */
+    /* ================= FORM VALIDATION ================= */
     function validateForm() {
         let isValid = true;
         const fields = ["name", "email", "enqphone", "country", "message"];
@@ -61,7 +67,19 @@ function init() {
     }
 
 
-    /* ================= AJAX SUBMIT ================= */
+    /* ================= FORM DATA ================= */
+    function getFormData() {
+        return {
+            name: document.getElementById("name")?.value.trim() || "",
+            email: document.getElementById("email")?.value.trim() || "",
+            enqphone: document.getElementById("enqphone")?.value.trim() || "",
+            country: document.getElementById("country")?.value.trim() || "",
+            message: document.getElementById("message")?.value.trim() || ""
+        };
+    }
+
+
+    /* ================= AJAX ================= */
     function ajaxSubmit(data, callback) {
         fetch(AJAX_URL, {
             method: "POST",
@@ -75,16 +93,17 @@ function init() {
 
 
     /* ================= WHATSAPP ================= */
-    window.sendWhatsApp = function () {
+    whatsappBtn && whatsappBtn.addEventListener("click", function (e) {
+        e.preventDefault();
         if (!validateForm()) return;
 
         showLoader();
-
-        let phone = atob(encodedPhone);
-        let data = getFormData();
+        const data = getFormData();
+        const phone = atob(encodedPhone);
 
         ajaxSubmit(data, () => {
-            let url = "https://wa.me/" + phone + "?text=" +
+            const url =
+                "https://wa.me/" + phone + "?text=" +
                 "*Enquiry from Alije Group*%0A%0A" +
                 "*Name:* " + data.name + "%0A" +
                 "*Contact:* " + data.email + "%0A" +
@@ -96,36 +115,29 @@ function init() {
             autoCloseThanks();
             window.open(url, "_blank");
         });
-    };
+    });
 
 
     /* ================= EMAIL ================= */
-    window.sendEmail = function () {
+    emailBtn && emailBtn.addEventListener("click", function (e) {
+        e.preventDefault();
         if (!validateForm()) return;
 
         showLoader();
-        let data = getFormData();
+        const data = getFormData();
 
         ajaxSubmit(data, () => {
             showThanksPopup();
             autoCloseThanks();
         });
-    };
+    });
 
 
-    /* ================= FORM DATA ================= */
-    function getFormData() {
-        return {
-            name: document.getElementById("name")?.value || "",
-            email: document.getElementById("email")?.value || "",
-            enqphone: document.getElementById("enqphone")?.value || "",
-            country: document.getElementById("country")?.value || "",
-            message: document.getElementById("message")?.value || ""
-        };
-    }
+    /* ================= PREVENT FORM SUBMIT ================= */
+    form && form.addEventListener("submit", e => e.preventDefault());
 
 
-    /* ================= HEADER ================= */
+    /* ================= HEADER SHRINK ================= */
     const header = document.getElementById("header");
     header && window.addEventListener("scroll", () => {
         header.classList.toggle("shrink", window.scrollY > 50);
@@ -138,12 +150,14 @@ function init() {
     const closeBtn = document.getElementById("closeSidebar");
 
     function openSidebar() {
-        sidebar && sidebar.classList.add("open");
+        if (!sidebar) return;
+        sidebar.classList.add("open");
         document.body.classList.add("no-scroll");
     }
 
     function closeSidebar() {
-        sidebar && sidebar.classList.remove("open");
+        if (!sidebar) return;
+        sidebar.classList.remove("open");
         document.body.classList.remove("no-scroll");
     }
 
@@ -151,16 +165,16 @@ function init() {
     closeBtn && closeBtn.addEventListener("click", closeSidebar);
 
     window.addEventListener("resize", () => {
-        window.innerWidth > 920 && closeSidebar();
+        if (window.innerWidth > 920) closeSidebar();
     });
 
 
     /* ================= ACTIVE LINKS ================= */
     function setActiveLink() {
         const current = (location.pathname.split("/").pop() || "index.html").toLowerCase();
-        document.querySelectorAll(".nav-links a, .sidebar a").forEach(a => {
-            const href = a.getAttribute("href")?.split("/").pop().toLowerCase();
-            a.classList.toggle("active-link", href === current);
+        document.querySelectorAll(".nav-links a, .sidebar a").forEach(link => {
+            const href = link.getAttribute("href")?.split("/").pop().toLowerCase();
+            link.classList.toggle("active-link", href === current);
         });
     }
     setActiveLink();
@@ -170,19 +184,20 @@ function init() {
     document.querySelectorAll(".faq-item").forEach(item => {
         const q = item.querySelector(".faq-question");
         const a = item.querySelector(".faq-answer");
+        if (!q || !a) return;
 
-        q && q.addEventListener("click", () => {
+        q.addEventListener("click", () => {
             item.classList.toggle("active");
             a.style.display = a.style.display === "block" ? "none" : "block";
         });
     });
 
 
-    /* ================= FULLSCREEN GALLERY ================= */
+    /* ================= FULLSCREEN IMAGE GALLERY ================= */
     const images = document.querySelectorAll(".photo-item img");
     const fullscreenView = document.getElementById("fullscreenView");
     const fullscreenImg = document.getElementById("fullscreenImg");
-    const previewCloseBtn = document.getElementById("previewcloseBtn");
+    const previewCloseBtn = document.getElementById("closeBtn");
 
     images.forEach(img => {
         img.addEventListener("click", () => {
@@ -199,6 +214,8 @@ function init() {
         if (e.target === fullscreenView) fullscreenView.classList.remove("active");
     });
 
+
+    /* ================= ESC KEY ================= */
     document.addEventListener("keydown", e => {
         if (e.key === "Escape") {
             fullscreenView && fullscreenView.classList.remove("active");
@@ -207,5 +224,5 @@ function init() {
     });
 }
 
-/* INIT */
+/* ================= INIT ================= */
 document.addEventListener("DOMContentLoaded", init);
